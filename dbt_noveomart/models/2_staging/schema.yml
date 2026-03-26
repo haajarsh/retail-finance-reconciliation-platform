@@ -201,12 +201,24 @@ models:
     description: >
       Cleaned payment processor settlement files.
       One row = one settlement batch by tender by day by store.
+      NOTE: settlement_id is only unique within a country. The composite
+      surrogate key (settlement_id + country_code) is the true primary key.
+
+    columns:
+      - name: settlement_surrogate_key
+        description: >
+          Composite primary key: settlement_id + pipe + country_code.
+          Globally unique across both MYS and SGP.
+          Root cause of original failure: store 007 exists in both countries,
+          generating identical settlement_id values for different batches.
+        tests:
+          - unique
+          - not_null
 
     columns:
       - name: settlement_id
         description: "Unique settlement batch identifier"
         tests:
-          - unique
           - not_null
 
       - name: country_code
