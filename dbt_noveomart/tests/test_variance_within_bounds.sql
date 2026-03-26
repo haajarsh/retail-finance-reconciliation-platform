@@ -7,7 +7,20 @@
 --   logic is broken.
 --
 -- EXPECTED RESULT: 0 rows (no misclassified exceptions)
+-- 
+-- NOTE: Requires int_pos_sap_matched to exist.
+--       Run AFTER: dbt run --select "3_intermediate.*"
+--       Tagged 'intermediate' so staging-only runs exclude it:
+--       # only after intermediate models exist
+--          dbt test --select "tag:post_staging"   
+--       # or exclude it from staging-only runs:
+--          dbt test --select "2_staging.*" --exclude "tag:post_staging"
+--          dbt test --select "2_staging.*" --exclude "tag:intermediate"
 -- =============================================================================
+{{ config(
+    enabled=true,
+    tags=['intermediate', 'post_staging']
+) }}
 
 SELECT
     p.match_id,
