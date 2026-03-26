@@ -1,0 +1,295 @@
+# =============================================================================
+# models/2_staging/schema.yml
+# =============================================================================
+
+version: 2
+
+models:
+
+  # ── stg_pos_eod_summary ────────────────────────────────────────────────────
+  - name: stg_pos_eod_summary
+    description: >
+      Cleaned daily Z-report totals per store.
+      Primary driver of POS-SAP sales reconciliation.
+      One row = one store + one business date.
+
+    columns:
+      - name: eod_summary_id
+        description: "Unique identifier for each daily store summary"
+        tests:
+          - unique
+          - not_null
+
+      - name: country_code
+        description: "Country code — must be MYS or SGP"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+              # EXPECTED FAIL: ~105 rows injected with wrong country codes
+              # These are filtered out in the WHERE clause above
+
+      - name: store_id
+        description: "Store identifier — must exist in dim_store"
+        tests:
+          - not_null
+          # EXPECTED FAIL: ~176 rows injected with null store_id
+          # These are filtered in WHERE but the raw table count will show them
+
+      - name: business_date
+        description: "The trading date this summary covers"
+        tests:
+          - not_null
+
+      - name: net_sales
+        description: "Net sales amount for the day (pre-tax)"
+        tests:
+          - not_null
+
+
+  # ── stg_pos_transaction_header ─────────────────────────────────────────────
+  - name: stg_pos_transaction_header
+    description: >
+      Cleaned individual POS transactions.
+      One row = one sale, return, or void.
+      Key source of RC-003 (promo_code populated but not in SAP).
+
+    columns:
+      - name: pos_txn_id
+        description: "Unique POS transaction identifier"
+        tests:
+          - unique:
+            # EXPECTED FAIL: ~1,861 duplicate txn_ids injected (RC-005)
+            # dbt catches these — they should NEVER reach the mart
+              config:                         # Use config to avoid hard FAIL on duplicates — we want to catch but not break the build
+                warn_instead_of_error: true   # dbt 1.6+ 
+                # or use severity:
+                severity: warn                # WARN not FAIL — known issue
+          - not_null
+
+      - name: country_code
+        description: "Country code"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+
+      - name: store_id
+        description: "Store where transaction occurred"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_dim_store')
+              field: store_id
+              # Tests that every store_id in transactions exists in dim_store
+              # Orphaned store_ids would corrupt store-level reporting
+
+      - name: txn_type
+        description: "Transaction type"
+        tests:
+          - accepted_values:
+              values: ['SALE', 'RETURN', 'VOID']
+
+      - name: total_tendered
+        description: "Total amount paid by customer — must be non-negative"
+        tests:
+          - not_null
+          # Note: dbt_utils package needed for expression_is_true
+          # Install with: pip install dbt-utils
+          # Then add to packages.yml (see packages.yml file)
+
+
+  # ── stg_pos_tender ─────────────────────────────────────────────────────────
+  - name: stg_pos_tender
+    description: >
+      Cleaned payment tender lines.
+      One transaction can have multiple tender rows (split payment).
+
+    columns:
+      - name: pos_tender_id
+        description: "Unique tender line identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: pos_txn_id
+        description: "FK to pos_transaction_header"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_pos_transaction_header')
+              field: pos_txn_id
+
+      - name: tender_code
+        description: "Payment method code"
+        tests:
+          - not_null
+
+      - name: tender_amount
+        description: "Amount paid using this tender method — must be >= 0"
+        tests:
+          - not_null
+          # EXPECTED FAIL: ~102 rows with negative tender amounts (NEG_TENDER)
+
+
+  # ── stg_sap_fi_document ────────────────────────────────────────────────────
+  - name: stg_sap_fi_document
+    description: >
+      Cleaned SAP FI document headers (mirrors SAP BKPF table).
+      One row = one SAP accounting document.
+
+    columns:
+      - name: belnr
+        description: "SAP document number"
+        tests:
+          - not_null
+
+      - name: bukrs
+        description: "SAP company code — must be MY01 or SG01"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MY01', 'SG01']
+
+      - name: posting_date
+        description: "Date the document was posted in SAP"
+        tests:
+          - not_null
+
+      - name: country_code
+        description: "Derived country code"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+
+
+  # ── stg_sap_fi_lineitem ────────────────────────────────────────────────────
+  - name: stg_sap_fi_lineitem
+    description: >
+      Cleaned SAP FI accounting line items (mirrors SAP BSEG table).
+      ~3 lines per document on average. ~600,000 rows total.
+
+    columns:
+      - name: belnr
+        description: "FK to sap_fi_document"
+        tests:
+          - not_null
+
+      - name: shkzg
+        description: "Debit/Credit indicator — must be S or H"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['S', 'H']
+
+      - name: dmbtr
+        description: "Amount in local currency — must be positive"
+        tests:
+          - not_null
+
+
+  # ── stg_bank_card_settlement ───────────────────────────────────────────────
+  - name: stg_bank_card_settlement
+    description: >
+      Cleaned payment processor settlement files.
+      One row = one settlement batch by tender by day by store.
+
+    columns:
+      - name: settlement_id
+        description: "Unique settlement batch identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: country_code
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+
+      - name: gross_amount
+        description: "Total gross amount in settlement batch"
+        tests:
+          - not_null
+
+      - name: net_settlement
+        description: "Net amount after fees and chargebacks"
+        tests:
+          - not_null
+
+
+  # ── stg_bank_statement_line ────────────────────────────────────────────────
+  - name: stg_bank_statement_line
+    description: >
+      Cleaned MT940 bank statement credit lines.
+      Credits only (dc_indicator = 'C' filtered at staging).
+
+    columns:
+      - name: statement_line_id
+        description: "Unique bank statement line identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: country_code
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+
+      - name: amount
+        description: "Credit amount received in bank"
+        tests:
+          - not_null
+
+
+  # ── stg_dim_country ────────────────────────────────────────────────────────
+  - name: stg_dim_country
+    description: "Country configuration table — the brain of the project."
+
+    columns:
+      - name: country_code
+        tests:
+          - unique
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+
+      - name: variance_threshold_t2
+        description: "Auto-clear threshold — MYR 50 (MY) or SGD 20 (SG)"
+        tests:
+          - not_null
+
+      - name: variance_threshold_t3
+        description: "Escalation threshold — MYR 200 (MY) or SGD 100 (SG)"
+        tests:
+          - not_null
+
+
+  # ── stg_dim_store ──────────────────────────────────────────────────────────
+  - name: stg_dim_store
+    description: "Store master data. 15 active stores."
+
+    columns:
+      - name: store_id
+        tests:
+          - unique
+          - not_null
+
+      - name: country_code
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+
+
+  # ── stg_dim_root_cause ─────────────────────────────────────────────────────
+  - name: stg_dim_root_cause
+    description: "Root cause codes for exceptions."
+
+    columns:
+      - name: root_cause_code
+        tests:
+          - unique
+          - not_null

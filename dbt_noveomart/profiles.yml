@@ -1,0 +1,13 @@
+dbt_noveomart:
+  outputs:
+    dev:
+      account: IFYHJZJ-CYB67789
+      database: NOVEOMART_DB
+      password: hevpyf-rYbkaw-tucco6
+      role: SYSADMIN
+      schema: MART
+      threads: 4
+      type: snowflake
+      user: HAAJAR
+      warehouse: PORTFOLIO_COMPUTE_WH
+  target: dev

@@ -1,0 +1,163 @@
+# =============================================================================
+# models/4_marts/schema.yml
+# =============================================================================
+
+version: 2
+
+models:
+
+  # ── mart_recon_summary ─────────────────────────────────────────────────────
+  - name: mart_recon_summary
+    description: >
+      Master reconciliation summary table. Powers Power BI Page 1.
+      Contains both POS_SAP and PAY_BANK results in one table.
+      One row = one store + one date + one recon_type.
+
+    columns:
+      - name: match_id
+        description: "Unique reconciliation record identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: recon_type
+        description: "POS_SAP or PAY_BANK"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['POS_SAP', 'PAY_BANK']
+
+      - name: country_code
+        tests:
+          - not_null
+
+      - name: recon_date
+        tests:
+          - not_null
+
+      - name: match_status
+        description: "MATCHED or EXCEPTION — drives the traffic light on Page 1"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MATCHED', 'EXCEPTION']
+
+      - name: match_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['EXACT', 'TOLERANCE', 'REVIEW', 'ESCALATE',
+                       'UNMATCHED', 'FEE_VARIANCE']
+
+
+  # ── mart_pos_sap_detail ────────────────────────────────────────────────────
+  - name: mart_pos_sap_detail
+    description: >
+      Detailed POS vs SAP results with store and root cause context.
+      Powers Power BI Page 2.
+
+    columns:
+      - name: match_id
+        tests:
+          - unique
+          - not_null
+
+      - name: store_id
+        tests:
+          - not_null
+
+      - name: pos_amount
+        tests:
+          - not_null
+
+      - name: match_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MATCHED', 'EXCEPTION']
+
+
+  # ── mart_pay_bank_detail ───────────────────────────────────────────────────
+  - name: mart_pay_bank_detail
+    description: >
+      Detailed payment vs bank results with aging analysis.
+      Powers Power BI Page 3.
+
+    columns:
+      - name: match_id
+        tests:
+          - unique
+          - not_null
+
+      - name: aging_bucket
+        description: "Settlement aging classification for Page 3 aging chart"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Current', 'T+1 Overdue', 'T+2 Overdue', '>T+2 Overdue']
+
+      - name: settlement_timing_status
+        tests:
+          - accepted_values:
+              values: ['ON TIME', 'OVERDUE']
+
+
+  # ── mart_exception_log ─────────────────────────────────────────────────────
+  - name: mart_exception_log
+    description: >
+      All open exceptions across both recon types.
+      Powers Power BI Page 4 (Exception Drill-Down).
+
+    columns:
+      - name: match_id
+        tests:
+          - unique
+          - not_null
+
+      - name: severity
+        description: "Exception severity based on age"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['NEW', 'MEDIUM', 'HIGH', 'CRITICAL']
+
+      - name: sla_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Within SLA', 'SLA BREACHED']
+
+      - name: review_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['REVIEWED', 'PENDING REVIEW']
+
+
+  # ── mart_root_cause_trend ──────────────────────────────────────────────────
+  - name: mart_root_cause_trend
+    description: >
+      Monthly exception trend by root cause.
+      Powers Power BI Page 5 (Trend and Root Cause Analysis).
+
+    columns:
+      - name: country_code
+        tests:
+          - not_null
+
+      - name: period_key
+        tests:
+          - not_null
+
+      - name: root_cause_code
+        tests:
+          - not_null
+
+      - name: exception_count
+        tests:
+          - not_null
+
+      - name: match_rate_pct
+        description: "Percentage of records that matched for this period"
+        tests:
+          - not_null

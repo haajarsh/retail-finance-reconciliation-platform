@@ -1,0 +1,110 @@
+# =============================================================================
+# sources.yml
+# Purpose: Declares all raw Snowflake source tables
+# =============================================================================
+
+version: 2
+
+sources:
+  - name: raw
+    database: NOVEOMART_DB        # single database
+    schema: RAW                   # RAW schema
+    description: "Raw source tables loaded from CSV files"
+
+    tables:
+
+      # ── POS Tables ──────────────────────────────────────────────────────────
+      - name: pos_transaction_header
+        description: >
+          Individual POS transactions — sales, returns, and voids.
+          One row per transaction. ~206,000 rows.
+          Key column: pos_txn_id (unique transaction identifier).
+          sap_doc_number is NULL when RC-001 (SAP batch failure) is injected.
+
+      - name: pos_tender
+        description: >
+          Payment tender lines for each transaction.
+          One transaction can have multiple tender rows (split payment).
+          ~202,000 rows.
+          Key column: pos_txn_id links back to pos_transaction_header.
+
+      - name: pos_eod_summary
+        description: >
+          Daily Z-report (end-of-day) totals per store.
+          THIS is the primary driver of POS-SAP reconciliation.
+          ~2,730 rows (15 stores x ~182 days).
+          Key column: net_sales is compared to sap_posted_amount in intermediate.
+
+      # ── SAP Tables ──────────────────────────────────────────────────────────
+      - name: sap_fi_document
+        description: >
+          SAP FI document headers — mirrors the SAP table BKPF.
+          One row per accounting document.
+          ~200,000 rows.
+          Key column: belnr (document number) links to sap_fi_lineitem.
+
+      - name: sap_fi_lineitem
+        description: >
+          SAP FI accounting line items — mirrors the SAP table BSEG.
+          ~3 line items per document on average.
+          ~600,000 rows.
+          Key column: hkont starting with '004' = revenue GL accounts.
+          shkzg = 'H' means credit (revenue), 'S' means debit.
+
+      # ── Bank / Payment Tables ────────────────────────────────────────────────
+      - name: bank_card_settlement
+        description: >
+          Payment processor settlement batches.
+          One row per settlement batch (by tender type per day per store).
+          ~22,000 rows.
+          RC-010: actual_rate_pct > contracted_rate_pct = fee variance.
+
+      - name: bank_statement_line
+        description: >
+          MT940 bank statement credit lines.
+          One row per bank transaction received.
+          ~22,000 rows.
+          Matched to bank_card_settlement to confirm cash receipt.
+
+      # ── Pre-Generated Reconciliation Result ──────────────────────────────────
+      - name: recon_match_result
+        description: >
+          Pre-generated reconciliation results.
+          Used as a reference / seed for mart layer validation.
+          ~25,000 rows.
+
+
+      # ── Dimension Tables ─────────────────────────────────────────────────────
+      - name: dim_country
+        description: >
+          Configuration table — the single most important dimension.
+          All country-specific logic lives here: thresholds, tax rates,
+          payment rails, fiscal year end, regulatory body.
+          2 rows: MYS (Malaysia) and SGP (Singapore).
+
+      - name: dim_store
+        description: "Store master data. 15 stores: 8 Malaysia, 7 Singapore."
+
+      - name: dim_tender_type
+        description: "Payment method master. MDR rates, settlement lag by tender."
+
+      - name: dim_bank
+        description: "Bank account master for settlement reconciliation."
+
+      - name: dim_tax_code
+        description: "SST codes (Malaysia) and GST codes (Singapore)."
+
+      - name: dim_currency
+        description: "Daily FX rates Oct 2024 to Mar 2025."
+
+      - name: dim_fiscal_calendar
+        description: "Working days, public holidays, period-close flags by country."
+
+      - name: dim_root_cause
+        description: "Root cause codes for exceptions. Powers the Page 5 Pareto chart."
+
+
+
+
+
+  
