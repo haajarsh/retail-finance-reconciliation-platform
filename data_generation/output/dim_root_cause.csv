@@ -1,0 +1,16 @@
+root_cause_code,category,subcategory,description,responsible_team,typical_resolution_hrs,is_systemic,occurrence_count
+RC-001,SYSTEM,Batch Job,SAP batch posting job failed or timed out,IT-SAP,4,N,0
+RC-002,SYSTEM,Integration,POS-SAP integration feed not received (middleware timeout),IT-Middleware,6,N,0
+RC-003,CONFIG,Promo Mapping,Promotion code not configured in SAP pricing conditions,IT-SAP,8,Y,0
+RC-004,PROCESS,Manual Entry,Manual SAP posting entered with incorrect amount,Finance,2,N,0
+RC-005,DATA,Duplicate,Duplicate POS transaction transmitted to SAP,IT-POS,3,N,0
+RC-006,PROCESS,Return,POS return not correctly reversed in SAP,Finance,2,N,0
+RC-007,DATA,Rounding,Rounding difference between POS (2dp) and SAP (2dp) due to tax calc,IT-SAP,1,Y,0
+RC-008,PROCESS,Period,SAP posting in wrong fiscal period (prior period close issue),Finance,4,N,0
+RC-009,PAYMENT,Settlement Lag,Card/e-wallet settlement received in bank later than expected,Treasury,24,N,0
+RC-010,PAYMENT,Interchange,Interchange fee deducted differs from contracted rate,Treasury,48,Y,0
+RC-011,PAYMENT,Chargeback,Customer chargeback deducted from settlement batch,Finance,72,N,0
+RC-012,DATA,Data Quality,"Source data quality issue — null, invalid or out-of-range value",IT-POS,4,N,0
+RC-013,CONFIG,Tax Code,Wrong tax code applied — SST/GST rate mismatch,IT-SAP,4,Y,0
+RC-014,PAYMENT,Missing Credit,Bank statement credit not received — bank cut-off or processing delay,Treasury,48,N,0
+RC-015,SYSTEM,FX Conversion,Cross-border card FX conversion error (tourist spend in SG),IT-SAP,8,N,0

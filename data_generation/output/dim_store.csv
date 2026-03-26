@@ -1,0 +1,16 @@
+store_id,country_code,store_name,mall_name,city,state,store_type,sap_profit_center,sap_cost_center,bank_account,bank_code,mas_merchant_id,tax_registration,store_manager,open_date,is_active,floor_area_sqft,num_terminals
+MY-STR-001,MYS,NoveoMart KLCC,Suria KLCC,Kuala Lumpur,WP Kuala Lumpur,FLAGSHIP,PC-MY-001,CC-MY-001,514-100001-001,MAYB,,SST-MY-001001,Hafizuddin bin Kamarudin,2018-03-15,Y,8500,6
+MY-STR-002,MYS,NoveoMart Pavilion,Pavilion KL,Kuala Lumpur,WP Kuala Lumpur,STANDARD,PC-MY-002,CC-MY-002,514-100001-001,MAYB,,SST-MY-001002,Siti Norzaharah binti Ahmad,2019-06-01,Y,5200,4
+MY-STR-003,MYS,NoveoMart Mid Valley,Mid Valley Megamall,Kuala Lumpur,WP Kuala Lumpur,STANDARD,PC-MY-003,CC-MY-003,514-100001-001,MAYB,,SST-MY-001003,Tan Beng Kiat,2019-11-20,Y,4800,4
+MY-STR-004,MYS,NoveoMart Sunway,Sunway Pyramid,Subang Jaya,Selangor,STANDARD,PC-MY-004,CC-MY-004,800-200001-001,CIMB,,SST-MY-001004,Rajendran a/l Muthu,2020-02-14,Y,4200,3
+MY-STR-005,MYS,NoveoMart IOI City,IOI City Mall,Putrajaya,WP Putrajaya,STANDARD,PC-MY-005,CC-MY-005,800-200001-001,CIMB,,SST-MY-001005,Nurul Hidayah binti Zainudin,2021-05-10,Y,3600,3
+MY-STR-006,MYS,NoveoMart 1 Utama,1 Utama Shopping Centre,Petaling Jaya,Selangor,STANDARD,PC-MY-006,CC-MY-006,212-300001-001,RHB,,SST-MY-001006,Lee Choon Wei,2021-09-25,Y,3900,3
+MY-STR-007,MYS,NoveoMart Gurney,Gurney Plaza,George Town,Penang,STANDARD,PC-MY-007,CC-MY-007,212-300001-001,RHB,,SST-MY-001007,Priya d/o Krishnamurthy,2022-03-01,Y,3200,3
+MY-STR-008,MYS,NoveoMart Paradigm,Paradigm Mall JB,Johor Bahru,Johor,STANDARD,PC-MY-008,CC-MY-008,212-300001-001,RHB,,SST-MY-001008,Mohammad Asyraf bin Othman,2022-10-15,Y,2800,2
+SG-STR-001,SGP,NoveoMart ION Orchard,ION Orchard,Singapore,Central,FLAGSHIP,PC-SG-001,CC-SG-001,003-100001-01,DBS,MAS-SG-NVM-001,GST-SG-200100001A,Cynthia Ng Swee Lin,2019-01-15,Y,7200,5
+SG-STR-002,SGP,NoveoMart Vivocity,VivoCity,Singapore,South,STANDARD,PC-SG-002,CC-SG-002,003-100001-01,DBS,MAS-SG-NVM-002,GST-SG-200100001A,Benjamin Loh Zhi Hao,2019-08-20,Y,4600,4
+SG-STR-003,SGP,NoveoMart Bugis,Bugis Junction,Singapore,Central,STANDARD,PC-SG-003,CC-SG-003,501-200001-01,OCBC,MAS-SG-NVM-003,GST-SG-200100001A,Grace Tan Mei Ling,2020-07-01,Y,3800,3
+SG-STR-004,SGP,NoveoMart Tampines,Tampines Mall,Singapore,East,STANDARD,PC-SG-004,CC-SG-004,501-200001-01,OCBC,MAS-SG-NVM-004,GST-SG-200100001A,Kevin Ong Jian Ming,2021-04-10,Y,3400,3
+SG-STR-005,SGP,NoveoMart Jurong,JEM Shopping Mall,Singapore,West,STANDARD,PC-SG-005,CC-SG-005,359-300001-01,UOB,MAS-SG-NVM-005,GST-SG-200100001A,Patricia Yeo Hwee Lian,2021-11-30,Y,3100,3
+SG-STR-006,SGP,NoveoMart Northpoint,Northpoint City,Singapore,North,STANDARD,PC-SG-006,CC-SG-006,359-300001-01,UOB,MAS-SG-NVM-006,GST-SG-200100001A,Alvin Goh Chee Keong,2022-06-15,Y,2700,2
+SG-STR-007,SGP,NoveoMart Changi,Jewel Changi Airport,Singapore,East,STANDARD,PC-SG-007,CC-SG-007,359-300001-01,UOB,MAS-SG-NVM-007,GST-SG-200100001A,Stephanie Koh Pei Ling,2023-01-20,Y,2400,2

@@ -1,0 +1,18 @@
+tender_code,country_code,tender_name,tender_category,sap_gl_account,settlement_lag_days,is_card,is_ewallet,interchange_rate_pct,is_active,notes
+CASH,BOTH,Cash,CASH,0011000001,0,0,0,0.0,Y,Cash. No settlement lag. Variance = cash over/short.
+VISA,BOTH,Visa Credit / Debit,CARD,0011100001,1,1,0,1.5,Y,T+1 settlement. Standard MDR ~1.5%.
+MASTERCARD,BOTH,Mastercard Credit / Debit,CARD,0011100002,1,1,0,1.5,Y,T+1 settlement.
+AMEX,BOTH,American Express,CARD,0011100003,2,1,0,2.8,Y,T+2 settlement. Higher MDR ~2.8%.
+UNIONPAY,BOTH,UnionPay,CARD,0011100004,1,1,0,0.8,Y,Popular with tourist spend. Low MDR.
+VOUCHER,BOTH,Gift Voucher / Gift Card,VOUCHER,0011200001,0,0,0,0.0,Y,Redeemed in-store. Contra to gift card liability GL.
+TNG,MYS,Touch n Go eWallet,EWALLET,0011300001,1,0,1,0.7,Y,Most dominant MY e-wallet. T+1 settlement via TnG operator.
+GRABPAY_MY,MYS,GrabPay Malaysia,EWALLET,0011300002,1,0,1,0.7,Y,Grab Pay MY entity — separate from SG.
+BOOST,MYS,Boost eWallet,EWALLET,0011300003,1,0,1,0.7,Y,Axiata-owned MY e-wallet.
+DUITNOW_MY,MYS,DuitNow QR,EWALLET,0011300004,1,0,1,0.0,Y,BNM-mandated zero-MDR QR standard. IBG transfer.
+MYDEBIT,MYS,MyDebit,CARD,0011100005,1,1,0,0.15,Y,Malaysian domestic debit scheme. Low MDR.
+BNPL_ATOME_MY,MYS,Atome BNPL Malaysia,BNPL,0011400001,2,0,0,3.5,Y,Buy Now Pay Later. T+2. Higher MDR. Separate merchant agreement.
+PAYNOW,SGP,PayNow / FAST,EWALLET,0012300001,0,0,1,0.0,Y,Real-time. FAST network. Zero MDR. Very dominant in SG.
+NETS,SGP,NETS Debit,CARD,0012100001,1,1,0,0.55,Y,SG domestic debit. NETS operator settlement — separate from Visa/MC processor.
+GRABPAY_SG,SGP,GrabPay Singapore,EWALLET,0012300002,1,0,1,0.7,Y,Grab Pay SG entity.
+FAVE,SGP,Fave eWallet,EWALLET,0012300003,1,0,1,0.8,Y,Fave cashback platform. Popular in SG.
+BNPL_ATOME_SG,SGP,Atome BNPL Singapore,BNPL,0012400001,2,0,0,3.5,Y,SG Atome entity. T+2 settlement.

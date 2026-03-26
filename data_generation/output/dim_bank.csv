@@ -1,0 +1,7 @@
+bank_code,country_code,bank_name,bank_short_name,swift_bic,bank_account_no,account_type,sap_house_bank,sap_account_id,statement_format,transfer_rail,settlement_cut_off,contact_name,is_active
+MAYB,MYS,Malayan Banking Berhad,Maybank,MBBEMYKL,514-100001-001,COLLECTION,MAYB1,MAIN1,MT940,IBG / DuitNow,17:00,Ahmad Farid bin Hamid,Y
+CIMB,MYS,CIMB Bank Berhad,CIMB Bank,CIBBMYKL,800-200001-001,COLLECTION,CIMB1,MAIN1,MT940,IBG / DuitNow,17:00,Nurul Ain binti Rashid,Y
+RHB,MYS,RHB Bank Berhad,RHB Bank,RHBBMYKL,212-300001-001,COLLECTION,RHB01,MAIN1,MT940,IBG / DuitNow,17:00,Chong Wei Liang,Y
+DBS,SGP,DBS Bank Ltd,DBS,DBSSSGSG,003-100001-01,CURRENT,DBS01,MAIN1,MT940,FAST / PayNow,17:00,Sarah Lim Hui Ying,Y
+OCBC,SGP,Oversea-Chinese Banking Corporation,OCBC,OCBCSGSG,501-200001-01,CURRENT,OCBC1,MAIN1,MT940,FAST / PayNow,17:00,James Tan Keng Hwee,Y
+UOB,SGP,United Overseas Bank Ltd,UOB,UOVBSGSG,359-300001-01,CURRENT,UOB01,MAIN1,MT940,FAST / PayNow,17:00,Michelle Wong Siew Khim,Y

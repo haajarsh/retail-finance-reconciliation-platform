@@ -1,0 +1,7 @@
+tax_code_key,country_code,tax_code,tax_type,tax_description,tax_rate_pct,effective_date,end_date,sap_tax_code,is_exempt,gl_account_tax,filing_frequency,tax_authority
+MYS-SR-6,MYS,SR-6,SST,SST Standard Rated Service — 6%,6.0,2024-10-01,,S6,N,0021300001,Bi-monthly,Royal Malaysian Customs Department
+MYS-SR-8,MYS,SR-8,SST,SST Standard Rated Goods — 8%,8.0,2024-10-01,,S8,N,0021300002,Bi-monthly,Royal Malaysian Customs Department
+MYS-ZR,MYS,ZR,SST,SST Zero Rated / Exempt Supply,0.0,2024-10-01,,ZR,Y,,Bi-monthly,Royal Malaysian Customs Department
+SGP-SR,SGP,SR,GST,GST Standard Rated Supply — 9%,9.0,2024-01-01,,SR,N,0021200001,Quarterly,Inland Revenue Authority of Singapore (IRAS)
+SGP-ZR,SGP,ZR,GST,GST Zero Rated Supply,0.0,2024-01-01,,ZR,Y,,Quarterly,Inland Revenue Authority of Singapore (IRAS)
+SGP-ES,SGP,ES,GST,GST Exempt Supply — Financial / Residential,0.0,2024-01-01,,ES,Y,,Quarterly,Inland Revenue Authority of Singapore (IRAS)
