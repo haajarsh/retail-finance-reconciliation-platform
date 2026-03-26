@@ -1,0 +1,33 @@
+[0m13:16:44.474653 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109da32d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109dbd810>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109dbded0>]}
+
+
+============================== 13:16:44.477769 | 68e5eb57-9249-4ece-ac36-1bcf0e669c05 ==============================
+[0m13:16:44.477769 [info ] [MainThread]: Running with dbt=1.11.7
+[0m13:16:44.478116 [debug] [MainThread]: running dbt with arguments {'warn_error': 'None', 'version_check': 'True', 'use_experimental_parser': 'False', 'partial_parse': 'True', 'use_colors': 'True', 'debug': 'False', 'log_format': 'default', 'printer_width': '80', 'no_print': 'None', 'cache_selected_only': 'False', 'log_cache_events': 'False', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True', 'write_json': 'True', 'log_path': 'logs', 'empty': 'None', 'invocation_command': 'dbt init dbt_noveomart', 'introspect': 'True', 'indirect_selection': 'eager', 'fail_fast': 'False', 'target_path': 'None', 'profiles_dir': '/Users/haajarsh./.dbt', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'quiet': 'False'}
+[0m13:16:44.491148 [debug] [MainThread]: Starter project path: /Users/haajarsh./Projects/Portfolio/noveomart-recon-platform/venv/lib/python3.11/site-packages/dbt/include/starter_project
+[0m13:16:44.495013 [info ] [MainThread]: 
+Your new dbt project "dbt_noveomart" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m13:16:44.495226 [info ] [MainThread]: Setting up your profile.
+[0m13:31:19.774544 [debug] [MainThread]: Snowflake adapter: Setting snowflake.connector to ERROR (file logging only)
+[0m13:31:19.775179 [debug] [MainThread]: Snowflake adapter: Setting botocore to ERROR (file logging only)
+[0m13:31:19.775374 [debug] [MainThread]: Snowflake adapter: Setting boto3 to ERROR (file logging only)
+[0m13:40:44.569321 [info ] [MainThread]: Profile dbt_noveomart written to /Users/haajarsh./.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m13:40:44.581263 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 982.9961, "process_in_blocks": "0", "process_kernel_time": 0.318728, "process_mem_max_rss": "168280064", "process_out_blocks": "0", "process_user_time": 1.13515}
+[0m13:40:44.584456 [debug] [MainThread]: Command `dbt init` succeeded at 13:40:44.584213 after 983.00 seconds
+[0m13:40:44.585829 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x100a3a510>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x100ad9950>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1099fc6d0>]}
+[0m13:40:44.586593 [debug] [MainThread]: Flushing usage events
+[0m13:40:46.344361 [debug] [MainThread]: An error was encountered while trying to flush usage events
