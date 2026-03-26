@@ -51,7 +51,6 @@ cleaned AS (
 
     WHERE country_code IN ('MYS', 'SGP')
         AND txn_status = 'COMPLETED'    -- Exclude cancelled transactions
-        AND store_id IS NOT NULL        -- ← ADD THIS: mirrors stg_pos_eod_summary pattern
 )
 
 SELECT * FROM cleaned
