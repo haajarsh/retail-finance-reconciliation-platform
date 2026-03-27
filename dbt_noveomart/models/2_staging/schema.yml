@@ -58,13 +58,8 @@ models:
       - name: pos_txn_id
         description: "Unique POS transaction identifier"
         tests:
-          - unique:
-            # EXPECTED FAIL: ~1,861 duplicate txn_ids injected (RC-005)
-            # dbt catches these — they should NEVER reach the mart
-              config:                         # Use config to avoid hard FAIL on duplicates — we want to catch but not break the build
-                warn_instead_of_error: true   # dbt 1.6+ 
-                # or use severity:
-                severity: warn                # WARN not FAIL — known issue
+          # ~1,861 duplicate pos_txn_ids injected (RC-005) — test correctly flags these
+          - unique
           - not_null
 
       - name: country_code
