@@ -75,7 +75,7 @@ models:
         tests:
           - accepted_values:
               values: ['EXACT', 'TOLERANCE', 'REVIEW', 'ESCALATE', 'UNMATCHED']
-          - not_null
+          - not_null   
 
       - name: match_status
         description: "MATCHED (auto-cleared) or EXCEPTION (needs human attention)"
