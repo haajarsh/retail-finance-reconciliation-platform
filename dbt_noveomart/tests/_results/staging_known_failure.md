@@ -31,15 +31,16 @@ to simulate real-world upstream problems.
 
 ## Screenshot
 
-![Staging test results before fix](<01 staging_test_failed.png>)
+![Staging test results before fix](<01 staging_before_fix.png>)
+
 ---
 
 ## Resolution
 
 See PR: `fix/staging-data-quality-issues`  
-After fix — PASS=55 ERROR=0
+After fix — PASS=51 ERROR=0
 
-![Staging test results after fix](02_staging_after_fix.png)
+![Staging test results after fix](<02 staging_after_fix.png>)
 ```
 
 ---
