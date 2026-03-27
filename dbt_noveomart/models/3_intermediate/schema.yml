@@ -73,9 +73,9 @@ models:
           ESCALATE = large variance, IT ticket raised.
           UNMATCHED = no SAP record found (RC-001 batch failure).
         tests:
-          - not_null
           - accepted_values:
               values: ['EXACT', 'TOLERANCE', 'REVIEW', 'ESCALATE', 'UNMATCHED']
+          - not_null
 
       - name: match_status
         description: "MATCHED (auto-cleared) or EXCEPTION (needs human attention)"
