@@ -7,7 +7,6 @@
 --           Before we can compare SAP to POS, we must first collapse all those line items into one number per store per day.
 -- Source  : stg_sap_fi_lineitem + stg_sap_fi_document
 -- =============================================================================
-
 -- FIX APPLIED (v1.1):
 --   The data generator did not populate prctr (profit_centre) on any
 --   SAP line item row — all 600,576 rows have empty prctr.

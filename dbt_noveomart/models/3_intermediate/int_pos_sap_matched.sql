@@ -6,6 +6,7 @@
 --           One row = one store + one business date reconciliation result.
 -- Source  : stg_pos_eod_summary + int_sap_sales_by_store_date + stg_dim_country + stg_dim_store
 -- =============================================================================
+--
 -- FIX APPLIED (v1.1):
 --   Updated JOIN to use store_id instead of sap_profit_centre.
 --   int_sap_sales_by_store_date now groups by store_id (derived via
