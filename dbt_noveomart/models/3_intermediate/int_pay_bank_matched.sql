@@ -40,15 +40,15 @@ matched AS (
         settlements.bank_code,
 
         -- Bank line details (NULL if no match found = RC-014)
-        bank_linesstatement_line_id,
-        bank_linesvalue_date                            AS bank_credit_date,
-        bank_linesamount                                AS actual_bank_credit,
+        bank_lines.statement_line_id,
+        bank_lines.value_date                            AS bank_credit_date,
+        bank_lines.amount                                AS actual_bank_credit,
 
         -- Variance: what we expected vs what the bank actually credited
-        settlements.net_settlement - COALESCE(bank_linesamount, 0) AS variance_sap_bank,
+        settlements.net_settlement - COALESCE(bank_lines.amount, 0) AS variance_sap_bank,
 
         -- Days between transaction and bank receipt
-        DATEDIFF(day, settlements.txn_date, COALESCE(bank_linesvalue_date, CURRENT_DATE()))
+        DATEDIFF(day, settlements.txn_date, COALESCE(bank_lines.value_date, CURRENT_DATE()))
                                                 AS settlement_lag_days_actual,
         cfg.settlement_lag_days                   AS settlement_lag_days_expected,
 
@@ -57,9 +57,9 @@ matched AS (
     FROM settlements
     LEFT JOIN bank_lines
         -- Match on the processor batch reference embedded in bank narrative
-        ON  settlements.country_code          = bank_linescountry_code
-        AND settlements.bank_account          = bank_linesbank_account
-        AND settlements.settlement_batch_id   = bank_linescustomer_reference
+        ON  settlements.country_code          = bank_lines.country_code
+        AND settlements.bank_account          = bank_lines.bank_account
+        AND settlements.settlement_batch_id   = bank_lines.customer_reference
     JOIN cfg
         ON  settlements.country_code          = cfg.country_code
 ),

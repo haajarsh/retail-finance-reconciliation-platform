@@ -41,12 +41,12 @@ joined AS (
 
         -- The three amounts being reconciled
         pos.net_sales                             AS pos_amount,
-        COALESCE(s.sap_posted_revenue, 0)       AS sap_amount,
+        COALESCE(sap.sap_posted_revenue, 0)       AS sap_amount,
         -- COALESCE: if SAP amount is NULL (no posting found), treat as 0
         -- This makes the variance = the full POS amount (worst case)
 
         -- The variance: positive = POS > SAP, negative = SAP > POS
-        pos.net_sales - COALESCE(s.sap_posted_revenue, 0) AS variance_pos_sap,
+        pos.net_sales - COALESCE(sap.sap_posted_revenue, 0) AS variance_pos_sap,
 
         -- Configuration thresholds from Dim_Country (NOT hardcoded)
        cfg.variance_threshold_t2                 AS threshold_tolerance,
