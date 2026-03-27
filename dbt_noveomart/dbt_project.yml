@@ -1,0 +1,54 @@
+
+# =============================================================================
+# dbt_project.yml — NoveoMart dbt project configuration file
+# =============================================================================
+
+name: 'dbt_noveomart'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'dbt_noveomart'
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+analysis-paths: ["analyses"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets: ["target", "dbt_packages"] # directories to be removed by `dbt clean`
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In this example config, we tell dbt to build all models in the example/
+# directory as views. These settings can be overridden in the individual model
+# files using the `{{ config(...) }}` macro.
+models:
+  dbt_noveomart:
+    # Config indicated by + and applies to all files under models/example/
+    2_staging:
+      +materialized: view
+      +schema: staging         # → writes to NOVEOMART_DB.MART_STAGING
+    
+    3_intermediate:
+      +materialized: view
+      +schema: intermediate   # → writes to NOVEOMART_DB.MART_INTERMEDIATE
+    
+    4_marts:
+      +materialized: table
+      +schema: mart           # → writes to NOVEOMART_DB.MART_MART
+
+    5_dimensions:
+      +materialized: table
+      +schema: dimension      # → writes to NOVEOMART_DB.MART_MART
+
+flags:
+  warn_error_options:
+    ignore:
+      - MissingArgumentsPropertyInGenericTestDeprecation

@@ -1,0 +1,128 @@
+# =============================================================================
+# models/3_intermediate/schema.yml
+# =============================================================================
+
+version: 2
+
+models:
+
+  # ── int_sap_sales_by_store_date ────────────────────────────────────────────
+  - name: int_sap_sales_by_store_date
+    description: >
+      SAP revenue aggregated to store (profit centre) + posting date level.
+      This is the SAP side of the POS-SAP reconciliation.
+      One row = one store + one posting date.
+
+    columns:
+      - name: country_code
+        description: "Country code"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+
+      - name: sap_profit_centre
+        description: "SAP profit centre (maps to store)"
+        tests:
+          - not_null
+
+      - name: sap_posting_date
+        description: "SAP posting date (budat)"
+        tests:
+          - not_null
+
+      - name: sap_posted_revenue
+        description: "Total revenue amount posted in SAP for this store-date"
+        tests:
+          - not_null
+
+
+  # ── int_pos_sap_matched ────────────────────────────────────────────────────
+  - name: int_pos_sap_matched
+    description: >
+      Core POS vs SAP reconciliation results.
+      One row = one store + one business date reconciliation event.
+      Contains the match_type classification and variance calculation.
+
+    columns:
+      - name: match_id
+        description: "Unique identifier for this reconciliation record"
+        tests:
+          - unique
+          - not_null
+
+      - name: recon_type
+        description: "Always POS_SAP for this model"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['POS_SAP']
+
+      - name: country_code
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP']
+
+      - name: match_type
+        description: >
+          Classification of the variance.
+          EXACT = zero variance.
+          TOLERANCE = small rounding difference, auto-cleared.
+          REVIEW = medium variance, Finance manager reviews.
+          ESCALATE = large variance, IT ticket raised.
+          UNMATCHED = no SAP record found (RC-001 batch failure).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['EXACT', 'TOLERANCE', 'REVIEW', 'ESCALATE', 'UNMATCHED']
+
+      - name: match_status
+        description: "MATCHED (auto-cleared) or EXCEPTION (needs human attention)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MATCHED', 'EXCEPTION']
+
+      - name: pos_amount
+        description: "POS daily net sales amount"
+        tests:
+          - not_null
+
+      - name: variance_pos_sap
+        description: "Calculated variance: pos_amount minus sap_amount"
+        tests:
+          - not_null
+
+
+  # ── int_pay_bank_matched ───────────────────────────────────────────────────
+  - name: int_pay_bank_matched
+    description: >
+      Payment processor settlement vs bank statement reconciliation.
+      One row = one settlement batch matched (or unmatched) to a bank credit.
+
+    columns:
+      - name: match_id
+        description: "Unique identifier for this payment reconciliation record"
+        tests:
+          - unique
+          - not_null
+
+      - name: recon_type
+        description: "Always PAY_BANK for this model"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['PAY_BANK']
+
+      - name: match_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['EXACT', 'TOLERANCE', 'FEE_VARIANCE', 'UNMATCHED', 'REVIEW']
+
+      - name: match_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MATCHED', 'EXCEPTION']

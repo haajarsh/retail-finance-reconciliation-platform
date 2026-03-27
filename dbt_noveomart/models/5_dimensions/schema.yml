@@ -1,0 +1,58 @@
+# =============================================================================
+# models/5_dimensions/schema.yml
+# =============================================================================
+
+version: 2
+
+models:
+
+  - name: dim_store_enriched
+    description: >
+      Enriched store dimension with health scores and exception counts.
+      Primary dimension for Power BI store-level analysis.
+      Power BI relationships: mart_*.store_id → dim_store_enriched.store_id
+
+    columns:
+      - name: store_id
+        tests:
+          - unique
+          - not_null
+
+      - name: health_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['CLEAR', 'MONITOR', 'ESCALATE']
+
+      - name: health_score
+        tests:
+          - not_null
+
+
+  - name: dim_country_enriched
+    description: >
+      Enriched country dimension with summary statistics.
+      Powers the country slicer on Power BI Page 1.
+
+    columns:
+      - name: country_code
+        tests:
+          - unique
+          - not_null
+
+
+  - name: dim_root_cause_enriched
+    description: >
+      Enriched root cause dimension with Pareto rankings.
+      Powers the Pareto chart on Power BI Page 5.
+
+    columns:
+      - name: root_cause_code
+        tests:
+          - unique
+          - not_null
+
+      - name: pareto_rank
+        description: "1 = most common exception root cause (RC-003)"
+        tests:
+          - not_null
