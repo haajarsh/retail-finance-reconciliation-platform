@@ -312,3 +312,41 @@ models:
         tests:
           - unique
           - not_null
+
+# ── stg_dim_tender_type ────────────────────────────────────────────────────
+  - name: stg_dim_tender_type
+    description: >
+      Payment method master. Covers all tender types across MYS, SGP, and BOTH.
+      Filters to active tenders only (is_active = 'Y').
+      17 rows total: 6 shared (BOTH), 6 MYS-only, 5 SGP-only.
+
+    columns:
+      - name: tender_code
+        description: "Unique payment method code — e.g. CASH, VISA, TNG"
+        tests:
+          - unique
+          - not_null
+
+      - name: country_code
+        description: "MYS, SGP, or BOTH"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP', 'BOTH']
+
+      - name: tender_category
+        description: "High-level payment category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['CASH', 'CARD', 'EWALLET', 'VOUCHER', 'BNPL']
+
+      - name: settlement_lag_days
+        description: "Days between transaction and bank settlement — 0 = same day"
+        tests:
+          - not_null
+
+      - name: interchange_rate_pct
+        description: "MDR rate charged by payment processor"
+        tests:
+          - not_null

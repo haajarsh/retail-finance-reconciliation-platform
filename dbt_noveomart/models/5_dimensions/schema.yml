@@ -56,3 +56,38 @@ models:
         description: "1 = most common exception root cause (RC-003)"
         tests:
           - not_null
+
+  - name: dim_tender_type
+    description: >
+        Payment method dimension for Power BI. Active tenders only.
+        Join to mart_pay_bank_detail on tender_code + country_code match
+        (account for country_code = 'BOTH' for shared tenders).
+
+    columns:
+      - name: tender_code
+        tests:
+          - unique
+          - not_null
+
+      - name: country_code
+        description: "MYS, SGP, or BOTH — use OR join logic for BOTH rows"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MYS', 'SGP', 'BOTH']
+
+      - name: tender_category
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['CASH', 'CARD', 'EWALLET', 'VOUCHER', 'BNPL']
+
+      - name: settlement_lag_days
+        description: "0 = same-day, 1 = T+1, 2 = T+2"
+        tests:
+          - not_null
+
+      - name: is_instant_settlement
+        description: "True when settlement_lag_days = 0 — derived flag"
+        tests:
+          - not_null
