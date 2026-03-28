@@ -10,7 +10,7 @@
 WITH source AS (
     SELECT * FROM {{ source('raw', 'dim_country') }}
 )
-
+ 
 SELECT
     country_code,
     country_code_iso2,
@@ -22,15 +22,15 @@ SELECT
     fiscal_year_end_month,
     timezone,
     settlement_lag_days,
-
-    -- The three variance thresholds — these drive all exception routing
+ 
+    -- The three variance thresholds  - these drive all exception routing
     variance_threshold_t2,   -- Below this = auto-clear (TOLERANCE)
     variance_threshold_t3,   -- Above this = escalate to Finance manager
     variance_threshold_t4,   -- Above this = escalate to IT + Controller
-
+ 
     regulatory_body,
     bank_transfer_rail,
     is_active
-
+ 
 FROM source
 WHERE is_active = 'Y'

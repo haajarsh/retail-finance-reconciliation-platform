@@ -1,0 +1,28 @@
+-- Grant your user full access to the database
+GRANT ALL PRIVILEGES ON DATABASE NOVEOMART_DB TO ROLE SYSADMIN;
+
+-- Grant access to create schemas inside the database
+GRANT CREATE SCHEMA ON DATABASE NOVEOMART_DB TO ROLE SYSADMIN;
+
+-- Grant access to the existing schemas
+GRANT ALL PRIVILEGES ON SCHEMA NOVEOMART_DB.RAW TO ROLE SYSADMIN;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA NOVEOMART_DB.RAW TO ROLE SYSADMIN;
+
+-- Grant access to future schemas dbt will create
+GRANT CREATE SCHEMA ON DATABASE NOVEOMART_DB TO ROLE SYSADMIN;
+
+-- Update grant role
+
+-- Grant all privileges on the MART schema
+GRANT ALL PRIVILEGES ON SCHEMA NOVEOMART_DB.MART TO ROLE SYSADMIN;
+
+-- Grant ability to create tables in MART
+GRANT CREATE TABLE ON SCHEMA NOVEOMART_DB.MART TO ROLE SYSADMIN;
+
+-- Also grant on STAGING and INTERMEDIATE while you're here
+-- (prevents the same error when dbt recreates views there)
+GRANT ALL PRIVILEGES ON SCHEMA NOVEOMART_DB.STAGING TO ROLE SYSADMIN;
+GRANT ALL PRIVILEGES ON SCHEMA NOVEOMART_DB.INTERMEDIATE TO ROLE SYSADMIN;
+
+-- Grant on future schemas dbt might create (e.g. dimensions)
+GRANT CREATE SCHEMA ON DATABASE NOVEOMART_DB TO ROLE SYSADMIN;

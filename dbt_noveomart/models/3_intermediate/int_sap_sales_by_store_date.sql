@@ -9,7 +9,7 @@
 -- =============================================================================
 -- FIX APPLIED (v1.1):
 --   The data generator did not populate prctr (profit_centre) on any
---   SAP line item row — all 600,576 rows have empty prctr.
+--   SAP line item row  - all 600,576 rows have empty prctr.
 --   In real SAP this column is populated, but since the generator
 --   skipped it, we derive store_id through the correct document chain:
 --
@@ -20,7 +20,7 @@
 --
 --   This is actually more accurate than using prctr directly, because
 --   it traces the posting back to the exact POS transaction that
---   triggered it — making the audit trail completely traceable.
+--   triggered it  - making the audit trail completely traceable.
 --
 -- READS FROM: staging models only
 -- FEEDS INTO: int_pos_sap_matched.sql
@@ -111,7 +111,7 @@ sap_by_store_date AS (
             END
         )                                           AS sap_posted_revenue,
  
-        -- Document count — RC-001 shows as zero or null here
+        -- Document count  - RC-001 shows as zero or null here
         COUNT(DISTINCT belnr)                       AS sap_document_count,
  
         -- DQ flag: 1 if any line item in this group has an issue

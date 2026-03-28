@@ -18,11 +18,10 @@
 --      inner join to the cleaned parent model — only keep tenders
 --      whose parent transaction passed all staging filters.
 -- =============================================================================
-
 WITH source AS (
     SELECT * FROM {{ source('raw', 'pos_tender') }}
 ),
-
+ 
 -- Reference the already-cleaned parent model
 -- INNER JOIN means: if the parent transaction was filtered out,
 -- the tender row is also excluded. This keeps both tables in sync.
@@ -31,7 +30,6 @@ valid_transactions AS (
     FROM {{ ref('stg_pos_transaction_header') }}
 ),
  
-
 cleaned AS (
     SELECT
         t.pos_tender_id,
